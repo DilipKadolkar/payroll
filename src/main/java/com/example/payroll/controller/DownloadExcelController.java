@@ -16,7 +16,7 @@ import java.io.IOException;
 public class DownloadExcelController {
 
     @GetMapping("/downloadExcel")
-    public ResponseEntity<byte[]> downloadExcel(@RequestParam String company) throws IOException {
+    public ResponseEntity<byte[]> downloadExcel(@RequestParam String company,@RequestParam String month) throws IOException {
         // Create a workbook and a sheet
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Payroll Statement");
