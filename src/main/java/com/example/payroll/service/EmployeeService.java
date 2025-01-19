@@ -1,49 +1,80 @@
 package com.example.payroll.service;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import com.example.payroll.Employee;
+import com.example.payroll.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.payroll.Employee;
-import com.example.payroll.EmployeeRepository;
+import java.util.List;
+import java.util.Optional;
 
-/*@Service marks a Java class that performs some service,
-such as executing business logic, performing
-calculations, and calling external APIs.*/
 @Service
-public class EmployeeService implements EmpService {
+public class EmployeeService {
+
+    private final EmployeeRepository employeeRepository;
+
     @Autowired
-    EmployeeRepository employeeRepository;
-
-    @Override
-    public ArrayList<Employee> findAllEmployee() {
-        return (ArrayList<Employee>) employeeRepository.findAll();
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
-    @Override
-    public Employee findAllEmployeeByID(long id) {
-        Optional<Employee> opt = employeeRepository.findById(id);
-        if (opt.isPresent())
-            return opt.get();
-        else
-            return null;
+    // Add a new employee
+    public Employee saveEmployee(Employee employee) {
+        return employeeRepository.save(employee);
     }
 
-    @Override
-    public void addEmployee() {
-        ArrayList<Employee> emp = new ArrayList<Employee>();
-        emp.add(new Employee("Lucknow", "Shubham"));
-        emp.add(new Employee("Delhi", "Puneet"));
-        emp.add(new Employee("Pune", "Abhay"));
-        emp.add(new Employee("Noida", "Anurag"));
-        for (Employee employee : emp) {
-            employeeRepository.save(employee);
+    // Get all employees
+    public List<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
+    }
+
+    // Get employee by ID
+    public Optional<Employee> getEmployeeById(Integer employeeID) {
+        return employeeRepository.findById(employeeID);
+    }
+
+    // Update an existing employee
+    public Employee updateEmployee(Integer employeeID, Employee updatedEmployee) {
+        Optional<Employee> existingEmployee = employeeRepository.findById(employeeID);
+
+        if (existingEmployee.isPresent()) {
+            Employee employee = existingEmployee.get();
+            employee.setFirstName(updatedEmployee.getFirstName());
+            employee.setLastName(updatedEmployee.getLastName());
+            employee.setEmail(updatedEmployee.getEmail());
+            employee.setPhoneNumber(updatedEmployee.getPhoneNumber());
+            employee.setJobTitle(updatedEmployee.getJobTitle());
+            employee.setDepartment(updatedEmployee.getDepartment());
+            employee.setHireDate(updatedEmployee.getHireDate());
+            employee.setSalary(updatedEmployee.getSalary());
+            employee.setAddressLine1(updatedEmployee.getAddressLine1());
+            employee.setAddressLine2(updatedEmployee.getAddressLine2());
+            employee.setCity(updatedEmployee.getCity());
+            employee.setState(updatedEmployee.getState());
+            employee.setZipCode(updatedEmployee.getZipCode());
+            return employeeRepository.save(employee);
+        } else {
+            throw new RuntimeException("Employee not found with ID: " + employeeID);
         }
     }
 
-    @Override
-    public void deleteAllData() {
-       employeeRepository.deleteAll();
+    // Delete an employee by ID
+    public void deleteEmployeeById(Integer employeeID) {
+        employeeRepository.deleteById(employeeID);
+    }
+
+    // Get employees by department
+    public List<Employee> getEmployeesByDepartment(String department) {
+        return employeeRepository.findByDepartment(department);
+    }
+
+    // Get employees by last name
+    public List<Employee> getEmployeesByLastName(String lastName) {
+        return employeeRepository.findByLastName(lastName);
+    }
+
+    // Get an employee by email
+    public Employee getEmployeeByEmail(String email) {
+        return employeeRepository.findByEmail(email);
     }
 }
