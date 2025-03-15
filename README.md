@@ -5,6 +5,7 @@ https://dev.mysql.com/downloads/windows/installer/8.0.html
 create user root/D!l!p1475
 
 Add below properties to application.properties
+
 spring.datasource.url=jdbc:mysql://localhost:3306/alsama
 spring.datasource.username=root
 spring.datasource.password=D!l!p1475
