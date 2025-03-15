@@ -16,6 +16,8 @@ create database alsama;
 
 show databases;
 
+use alsama
+
 CREATE TABLE Employees (
     employeeID INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
