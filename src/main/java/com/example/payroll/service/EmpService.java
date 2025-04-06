@@ -2,7 +2,7 @@ package com.example.payroll.service;
 
 import java.util.ArrayList;
 
-import com.example.payroll.Employee;
+import com.example.payroll.entity.Employee;
 
 public interface EmpService {
     ArrayList<Employee> findAllEmployee();

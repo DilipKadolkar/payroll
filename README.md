@@ -36,3 +36,34 @@ CREATE TABLE Employees (
 );
 
 
+//working
+
+CREATE TABLE Employee_Attendance (
+attendance_ID INT PRIMARY KEY AUTO_INCREMENT,
+employeeID INT,
+attendance_Date DATE,
+check_In_Time DATETIME,
+check_Out_Time DATETIME,
+attendance_Status VARCHAR(50),
+notes TEXT,
+overtime DECIMAL(5, 2) DEFAULT 0.00
+);
+
+DELIMITER //
+
+CREATE TRIGGER CalculateOvertime
+BEFORE INSERT ON Employee_Attendance
+FOR EACH ROW
+BEGIN
+DECLARE totalHours DECIMAL(5, 2);
+
+    SET totalHours = TIME_TO_SEC(TIMEDIFF(NEW.check_Out_Time, NEW.check_In_Time)) / 3600.0;
+
+    IF totalHours > 10 THEN
+        SET NEW.overtime = totalHours - 10;
+    ELSE
+        SET NEW.overtime = 0.00;
+    END IF;
+END //
+
+DELIMITER ;
